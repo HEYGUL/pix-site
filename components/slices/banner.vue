@@ -2,24 +2,21 @@
   <section :class="{ 'banner-with-background': hasBackgroundImage }">
     <div :class="['banner', { 'banner--with-image': hasImage }]">
       <div class="banner__main">
-        <prismic-rich-text :field="title" class="banner__title" />
-        <prismic-rich-text :field="textContent" class="banner__content" />
+        <prismic-rich-text :field="title" class="title--big" />
+        <prismic-rich-text :field="textContent" class="text--normal" />
         <slot></slot>
         <div class="banner__button-group">
           <div v-for="(link, index) in links" :key="`item-${index}`">
             <pix-link
               v-if="!isVideo(link)"
               :field="link.bannerlinkurl"
-              class="banner__button"
+              class="button"
               :class="videoClass(link)"
             >
               {{ link.bannerlinktext }}
             </pix-link>
             <template v-if="isVideo(link)">
-              <button
-                class="banner__button banner__button-video"
-                @click="openVideoModal()"
-              >
+              <button class="button button-video" @click="openVideoModal()">
                 <fa icon="play-circle" />
                 {{ link.bannerlinktext }}
               </button>
@@ -124,17 +121,7 @@ export default {
     margin: 0 32px;
   }
 
-  &__title h1 {
-    color: $grey-11;
-    font-size: 2.125rem;
-    line-height: 2.75rem;
-    font-weight: 400;
-  }
-
-  &__content p {
-    font-size: 1rem;
-    line-height: 1.625rem;
-    color: $grey-10;
+  .text--normal p {
     margin: 16px 0 24px;
   }
 
@@ -143,105 +130,54 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
 
-  .banner__button {
-    height: 44px;
-    font-family: 'Roboto', Arial, sans-serif;
-    background-color: $blue-1;
-    color: $white;
-    font-size: 1rem;
-    width: 240px;
-    border: 1.5px solid transparent;
-    border-radius: 4px;
-    padding: 0 20px;
-    margin: 5px 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover {
-      cursor: pointer;
-      background-color: $blue-3;
-    }
-
-    &.banner__button-video {
-      border-radius: 4px;
-      border: 1.5px solid $grey-11;
-      height: 44px;
-      color: $grey-11;
-      background-color: $white;
-
-      svg {
-        margin-right: 10px;
-      }
-
-      &:hover {
-        background-color: $grey-3;
-      }
+    .button {
+      margin: 5px 0;
     }
   }
 
   &--with-image img {
     display: none;
   }
+}
 
-  @include device-is('large-mobile') {
-    padding: 80px 0;
+@include device-is('large-mobile') {
+  .banner {
+    .banner__button-group {
+      flex-direction: row;
 
-    &__title h1 {
-      font-size: 2.875rem;
-      line-height: 3.813rem;
-      font-weight: 300;
-      letter-spacing: -0.15px;
+      .button {
+        margin: 0 10px;
+      }
     }
+  }
+}
 
-    &__content p {
-      font-size: 1.25rem;
-      line-height: 2rem;
+@include device-is('large-screen') {
+  .banner {
+    .banner__main {
+      width: 504px;
     }
 
     .banner__button-group {
       flex-direction: row;
-    }
+      justify-content: left;
 
-    .banner__button {
-      width: initial;
-      margin: 0 10px;
+      .button {
+        margin: 0 20px 0 0;
+      }
     }
   }
 
-  @include device-is('large-screen') {
-    &__title h1 {
-      font-size: 3.875rem;
-      line-height: 5.125rem;
-      font-weight: 300;
-      letter-spacing: -0.5px;
-    }
+  .banner--with-image {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1140px;
+    text-align: left;
 
-    &__main {
-      width: 504px;
-    }
-
-    &--with-image {
-      display: flex;
-      justify-content: space-between;
-      max-width: 1140px;
-      text-align: left;
-
-      img:nth-child(2) {
-        display: block;
-        max-width: 510px;
-      }
-
-      .banner__button-group {
-        justify-content: left;
-      }
-
-      .banner__button {
-        margin: 0 20px 0 0;
-      }
+    img:nth-child(2) {
+      display: block;
+      max-width: 510px;
     }
   }
 }

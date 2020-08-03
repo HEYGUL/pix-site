@@ -76,7 +76,7 @@ export default {
       return this.document[3]
     },
     bannerDocument() {
-      return this.document[0]
+      return this.document[4]
     },
   },
   head() {
