@@ -29,4 +29,30 @@
   }
 }
 
+.row-block {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: 12px;
+
+  padding: 64px 0;
+  font-family: 'Open Sans', Arial, sans-serif;
+
+  .row-block__main {
+    grid-column: 2 / 12;
+    text-align: center;
+  }
+}
+
+@include device-is('large-screen') {
+  .row-block {
+    display: grid;
+    grid-template-columns: 1fr repeat(12, 82px) 1fr;
+    grid-gap: 24px;
+
+    .row-block__main {
+      grid-column: 2 / 7;
+      text-align: left;
+    }
+  }
+}
 

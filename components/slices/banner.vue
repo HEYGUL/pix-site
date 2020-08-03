@@ -1,34 +1,39 @@
 <template>
-  <section :class="{ 'banner-with-background': hasBackgroundImage }">
-    <div :class="['banner', { 'banner--with-image': hasImage }]">
-      <div class="banner__main">
-        <prismic-rich-text :field="title" class="title--big" />
-        <prismic-rich-text :field="textContent" class="text--normal" />
-        <slot></slot>
-        <div class="banner__button-group">
-          <div v-for="(link, index) in links" :key="`item-${index}`">
-            <pix-link
-              v-if="!isVideo(link)"
-              :field="link.bannerlinkurl"
-              class="button"
-              :class="videoClass(link)"
-            >
+  <section
+    :class="[
+      {
+        'banner row-block banner-with-background': hasBackgroundImage,
+        'banner--with-image': hasImage,
+      },
+    ]"
+  >
+    <div class="row-block__main">
+      <prismic-rich-text :field="title" class="title--big" />
+      <prismic-rich-text :field="textContent" class="text--normal" />
+      <slot></slot>
+      <div class="banner__button-group">
+        <div v-for="(link, index) in links" :key="`item-${index}`">
+          <pix-link
+            v-if="!isVideo(link)"
+            :field="link.bannerlinkurl"
+            class="button"
+            :class="videoClass(link)"
+          >
+            {{ link.bannerlinktext }}
+          </pix-link>
+          <template v-if="isVideo(link)">
+            <button class="button button-video" @click="openVideoModal()">
+              <fa icon="play-circle" />
               {{ link.bannerlinktext }}
-            </pix-link>
-            <template v-if="isVideo(link)">
-              <button class="button button-video" @click="openVideoModal()">
-                <fa icon="play-circle" />
-                {{ link.bannerlinktext }}
-              </button>
-              <modal ref="modal" name="videoModal" height="auto">
-                <VideoSlice :video-url="link.bannerlinkurl" />
-              </modal>
-            </template>
-          </div>
+            </button>
+            <modal ref="modal" name="videoModal" height="auto">
+              <VideoSlice :video-url="link.bannerlinkurl" />
+            </modal>
+          </template>
         </div>
       </div>
-      <prismic-image v-if="hasImage" :field="imageUrl" />
     </div>
+    <prismic-image v-if="hasImage" :field="imageUrl" />
   </section>
 </template>
 
@@ -109,18 +114,6 @@ export default {
 
 <style lang="scss">
 .banner {
-  font-family: 'Open Sans', Arial, sans-serif;
-  padding: 64px 0;
-  text-align: center;
-  margin: 0 auto;
-
-  &__main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 0 32px;
-  }
-
   .text--normal p {
     margin: 16px 0 24px;
   }
@@ -135,10 +128,10 @@ export default {
       margin: 5px 0;
     }
   }
+}
 
-  &--with-image img {
-    display: none;
-  }
+.banner--with-image img {
+  display: none;
 }
 
 @include device-is('large-mobile') {
@@ -155,12 +148,9 @@ export default {
 
 @include device-is('large-screen') {
   .banner {
-    .banner__main {
-      width: 504px;
-    }
+    text-align: left;
 
     .banner__button-group {
-      flex-direction: row;
       justify-content: left;
 
       .button {
@@ -169,16 +159,9 @@ export default {
     }
   }
 
-  .banner--with-image {
-    display: flex;
-    justify-content: space-between;
-    max-width: 1140px;
-    text-align: left;
-
-    img:nth-child(2) {
-      display: block;
-      max-width: 510px;
-    }
+  .banner--with-image img {
+    display: grid;
+    grid-column: 8 / 13;
   }
 }
 </style>
